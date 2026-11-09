@@ -12,3 +12,8 @@ execute:
 library(tidyverse)
 library(arrow)
 ```
+```{r}
+#| label: history-schema
+
+arrow::schema(arrow::open_dataset("data/history.parquet"))
+```
