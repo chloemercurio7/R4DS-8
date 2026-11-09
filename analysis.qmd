@@ -15,5 +15,12 @@ library(arrow)
 ```{r}
 #| label: history-schema
 
-arrow::schema(arrow::open_dataset("data/history.parquet"))
+markets <- arrow::read_parquet("data/markets.parquet")
+history <- arrow::read_parquet("data/history.parquet")
+
+joined <- history |>
+  left_join(markets |> select(market_id, outcome), by = "market_id") |>
+  mutate(outcome_numeric = if_else(outcome == "YES", 1, 0))
+
+nrow(joined)
 ```
