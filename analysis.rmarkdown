@@ -1,0 +1,91 @@
+---
+title: "Prediction Markets"
+author: "Chloe Mercurio"
+format: html
+execute:
+  echo: false
+---
+
+```{r}
+#| message: false
+library(tidyverse)
+library(arrow)
+```
+
+```{r}
+arrow::ParquetFileReader$create("data/history.parquet")$GetSchema()
+```
+
+```{r}
+#| label: history-schema
+#| cache: true
+
+markets <- arrow::read_parquet("data/markets.parquet")
+history <- arrow::read_parquet("data/history.parquet")
+
+joined <- history |>
+  left_join(markets |> select(market_id, outcome, resolved_at), by = "market_id") |>
+  mutate(
+    outcome_numeric = if_else(outcome == "YES", 1, 0),
+    probability_error = abs(probability - outcome_numeric),
+    days_to_resolution = as.integer(as.Date(resolved_at) - date),
+    horizon = case_when(
+      days_to_resolution > 90 ~ ">90 days",
+      days_to_resolution >= 30 ~ "30–90 days",
+      days_to_resolution >= 7 ~ "7–30 days",
+      days_to_resolution >= 1 ~ "1–7 days",
+      days_to_resolution == 0 ~ "Final day"
+    ),
+    horizon = factor(
+      horizon,
+      levels = c(">90 days", "30–90 days", "7–30 days", "1–7 days", "Final day"),
+      ordered = TRUE
+    )
+  )
+```
+
+```{r}
+#| message: false
+
+groups <- read_parquet("data/groups.parquet")
+market_groups <- read_parquet("data/market_groups.parquet")
+
+# Inspect column types
+glimpse(groups)
+glimpse(market_groups)
+
+# Inspect example values
+head(groups, 5)
+head(market_groups, 5)
+
+# Check row counts
+nrow(groups)
+nrow(market_groups)
+
+# Compare column names with markets
+intersect(names(markets), names(market_groups))
+intersect(names(groups), names(market_groups))
+```
+
+```{r}
+accuracy <- joined |>
+  group_by(time_bucket = horizon) |>
+  summarise(
+    mean_error = mean(probability_error),
+    snapshots = n(),
+    .groups = "drop"
+  )
+
+accuracy
+
+ggplot(accuracy, aes(x = time_bucket, y = mean_error, group = 1)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Prediction markets get smarter near the deadline",
+    subtitle = "Mean absolute error in Manifold Markets forecasts, by days remaining",
+    x = "Days remaining",
+    y = "Mean absolute error"
+  )
+```
+

@@ -77,4 +77,14 @@ accuracy <- joined |>
   )
 
 accuracy
+
+ggplot(accuracy, aes(x = time_bucket, y = mean_error, group = 1)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Prediction markets get smarter near the deadline",
+    subtitle = "Mean absolute error in Manifold Markets forecasts, by days remaining",
+    x = "Days remaining",
+    y = "Mean absolute error"
+  )
 ```
