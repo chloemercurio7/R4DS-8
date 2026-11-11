@@ -89,6 +89,54 @@ probability: double</code></pre>
 <pre><code>[1] 43694</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 115
+Columns: 4
+$ group_slug     &lt;chr&gt; "us-politics", "politics-default", "donald-trump", "tru…
+$ group_name     &lt;chr&gt; "Us Politics", "Politics Default", "Donald Trump", "Tru…
+$ broad_category &lt;fct&gt; Politics, Politics, Politics, Politics, Politics, Polit…
+$ market_count   &lt;int&gt; 124, 113, 76, 76, 40, 19, 11, 11, 10, 6, 5, 83, 66, 62,…</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,820
+Columns: 2
+$ market_id  &lt;chr&gt; "5dA0gu6syy", "5dA0gu6syy", "5dA0gu6syy", "LppqdEh6NP", "Lp…
+$ group_slug &lt;chr&gt; "ai", "technical-ai-timelines", "technology-default", "tech…</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  group_slug         group_name         broad_category market_count
+  &lt;chr&gt;              &lt;chr&gt;              &lt;fct&gt;                 &lt;int&gt;
+1 us-politics        Us Politics        Politics                124
+2 politics-default   Politics Default   Politics                113
+3 donald-trump       Donald Trump       Politics                 76
+4 trumps-second-term Trumps Second Term Politics                 76
+5 magaland           Magaland           Politics                 40</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  market_id  group_slug            
+  &lt;chr&gt;      &lt;chr&gt;                 
+1 5dA0gu6syy ai                    
+2 5dA0gu6syy technical-ai-timelines
+3 5dA0gu6syy technology-default    
+4 LppqdEh6NP technology-default    
+5 LppqdEh6NP business              </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 115</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2820</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "market_id"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "group_slug"</code></pre>
+</div>
+</div>
 
 </main>
 <!-- /main column -->
