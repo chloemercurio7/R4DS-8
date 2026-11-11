@@ -27,7 +27,19 @@ joined <- history |>
   mutate(
     outcome_numeric = if_else(outcome == "YES", 1, 0),
     probability_error = abs(probability - outcome_numeric),
-    days_to_resolution = as.integer(as.Date(resolved_at) - date)
+    days_to_resolution = as.integer(as.Date(resolved_at) - date),
+    horizon = case_when(
+      days_to_resolution > 90 ~ ">90 days",
+      days_to_resolution >= 30 ~ "30–90 days",
+      days_to_resolution >= 7 ~ "7–30 days",
+      days_to_resolution >= 1 ~ "1–7 days",
+      days_to_resolution == 0 ~ "Final day"
+    ),
+    horizon = factor(
+      horizon,
+      levels = c(">90 days", "30–90 days", "7–30 days", "1–7 days", "Final day"),
+      ordered = TRUE
+    )
   )
 
 nrow(joined)
@@ -46,6 +58,9 @@ joined |>
       na.rm = TRUE
     )
   )
+
+joined |>
+  count(horizon, .drop = FALSE)
 ```
 
 ```{r}
