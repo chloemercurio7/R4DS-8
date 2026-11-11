@@ -18,6 +18,7 @@ arrow::ParquetFileReader$create("data/history.parquet")$GetSchema()
 
 ```{r}
 #| label: history-schema
+#| cache: true
 
 markets <- arrow::read_parquet("data/markets.parquet")
 history <- arrow::read_parquet("data/history.parquet")
