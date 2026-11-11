@@ -24,9 +24,18 @@ history <- arrow::read_parquet("data/history.parquet")
 
 joined <- history |>
   left_join(markets |> select(market_id, outcome), by = "market_id") |>
-  mutate(outcome_numeric = if_else(outcome == "YES", 1, 0))
+  mutate(
+    outcome_numeric = if_else(outcome == "YES", 1, 0),
+    probability_error = abs(probability - outcome_numeric)
+  )
 
 nrow(joined)
+
+joined |>
+  summarise(
+    mean_error = mean(probability_error),
+    median_error = median(probability_error)
+  )
 ```
 
 ```{r}
