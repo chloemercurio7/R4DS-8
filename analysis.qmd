@@ -28,3 +28,26 @@ joined <- history |>
 
 nrow(joined)
 ```
+
+```{r}
+#| message: false
+
+groups <- read_parquet("data/groups.parquet")
+market_groups <- read_parquet("data/market_groups.parquet")
+
+# Inspect column types
+glimpse(groups)
+glimpse(market_groups)
+
+# Inspect example values
+head(groups, 5)
+head(market_groups, 5)
+
+# Check row counts
+nrow(groups)
+nrow(market_groups)
+
+# Compare column names with markets
+intersect(names(markets), names(market_groups))
+intersect(names(groups), names(market_groups))
+```
