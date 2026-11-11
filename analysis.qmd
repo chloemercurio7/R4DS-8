@@ -95,20 +95,30 @@ final_day <- joined |>
 
 calibration <- final_day |>
   mutate(
-    probability_bin = cut(
-      probability,
-      breaks = seq(0, 1, by = 0.1),
-      include.lowest = TRUE
-    )
+    probability_bin = cut(probability, breaks = seq(0, 1, by = 0.1), include.lowest = TRUE),
+    predicted_probability = (as.integer(probability_bin) - 0.5) / 10
   ) |>
   group_by(probability_bin) |>
   summarise(
+    predicted_probability = first(predicted_probability),
     actual_rate = mean(outcome_numeric),
     n = n_distinct(market_id),
     .groups = "drop"
   )
 
 calibration
+
+ggplot(calibration, aes(x = predicted_probability, y = actual_rate, size = n)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  geom_point() +
+  scale_x_continuous(labels = scales::label_percent(), limits = c(0, 1)) +
+  scale_y_continuous(labels = scales::label_percent(), limits = c(0, 1)) +
+  labs(
+    title = "Final-day forecasts are not perfectly calibrated",
+    x = "Predicted probability of YES",
+    y = "Actual YES resolution rate",
+    size = "Markets"
+  )
 
 ggplot(final_day, aes(x = probability)) +
   geom_histogram()
