@@ -134,10 +134,14 @@ $ group_slug &lt;chr&gt; "ai", "technical-ai-timelines", "technology-default", "
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2885</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 800</code></pre>
+<pre><code># A tibble: 5 × 3
+  time_bucket mean_error snapshots
+  &lt;ord&gt;            &lt;dbl&gt;     &lt;int&gt;
+1 &gt;90 days        0.399       5239
+2 30–90 days      0.311      16136
+3 7–30 days       0.275      16719
+4 1–7 days        0.174       4800
+5 Final day       0.0896       800</code></pre>
 </div>
 </div>
 

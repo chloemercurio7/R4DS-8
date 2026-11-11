@@ -68,9 +68,13 @@ intersect(names(groups), names(market_groups))
 ```
 
 ```{r}
-markets_with_groups <- markets |>
-  left_join(market_groups, by = "market_id")
+accuracy <- joined |>
+  group_by(time_bucket = horizon) |>
+  summarise(
+    mean_error = mean(probability_error),
+    snapshots = n(),
+    .groups = "drop"
+  )
 
-nrow(markets_with_groups)
-nrow(markets)
+accuracy
 ```
