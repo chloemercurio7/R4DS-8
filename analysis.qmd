@@ -66,3 +66,11 @@ nrow(market_groups)
 intersect(names(markets), names(market_groups))
 intersect(names(groups), names(market_groups))
 ```
+
+```{r}
+markets_with_groups <- markets |>
+  left_join(market_groups, by = "market_id")
+
+nrow(markets_with_groups)
+nrow(markets)
+```
