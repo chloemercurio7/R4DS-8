@@ -11,6 +11,11 @@ execute:
 library(tidyverse)
 library(arrow)
 ```
+
+```{r}
+arrow::ParquetFileReader$create("data/history.parquet")$GetSchema()
+```
+
 ```{r}
 #| label: history-schema
 
